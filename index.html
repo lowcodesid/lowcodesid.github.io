@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sid.lammata — Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #07070e;
+      --bg-card:   #0e0e1c;
+      --bg-card-h: #131328;
+      --border:    #202038;
+      --border-h:  #3838a0;
+      --accent:    #FF6B00;
+      --green:     #50fa7b;
+      --text:      #f5f5fd;
+      --sub:       #9898b8;
+      --muted:     #6060a0;
+      --tag-bg:    #161630;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--bg-card);
+      padding: 40px 48px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.75;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 6vw, 62px);
+      font-weight: 800;
+      letter-spacing: 2px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .name span { color: var(--accent); }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--sub);
+      white-space: nowrap;
+    }
+
+    /* Green status dot — universally understood as "available" */
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    /* Tagline — all phrases same font, weight, colour. Uniform. */
+    .tagline {
+      margin-top: 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--sub);
+      max-width: 640px;
+      line-height: 1.75;
+    }
+
+    /* "don't ask how" — orange punchline */
+    .tagline .punchline { color: var(--accent); }
+
+    /* Sub-tagline comments — green like the status dot */
+    .sub-tagline {
+      margin-top: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+      opacity: 0.85;
+    }
+
+    .sub-tagline::before { content: '// '; opacity: 0.5; }
+
+    .sub-tagline .quip { opacity: 1; font-style: italic; }
+
+    /* ── 2×2 EQUAL GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s, transform 0.25s;
+      display: flex;
+      flex-direction: column;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:hover {
+      border-color: var(--border-h);
+      background: var(--bg-card-h);
+      transform: translateY(-4px);
+    }
+
+    .card:hover .card-glow { opacity: 1; }
+
+    /* Orange glow on top edge */
+    .card-glow {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* ── CARD HEADER: icon inline with title ── */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-icon {
+      font-size: 28px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .card-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #ababcc;
+      line-height: 1.65;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Card jokes — green like code comments */
+    .card-joke {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-style: italic;
+      color: var(--green);
+      opacity: 0.82;
+      margin-bottom: 16px;
+      line-height: 1.55;
+      flex-shrink: 0;
+    }
+
+    .card-joke::before { content: '// '; opacity: 0.5; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+      flex-shrink: 0;
+    }
+
+    /* Base tag shape — colors overridden per category */
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 4px 11px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
+    /* ── TAG COLOUR SYSTEM — persistent across all cards ── */
+    /* Finance → violet/purple */
+    .tag-finance {
+      color: #c084fc;
+      border-color: rgba(192,132,252,0.55);
+      background: rgba(168,85,247,0.14);
+    }
+    /* Property → cyan */
+    .tag-property {
+      color: #22d3ee;
+      border-color: rgba(34,211,238,0.45);
+      background: rgba(34,211,238,0.11);
+    }
+    /* Home Loans → amber */
+    .tag-homeloans {
+      color: #fbbf24;
+      border-color: rgba(251,191,36,0.45);
+      background: rgba(251,191,36,0.11);
+    }
+    /* AFL / Footy → red */
+    .tag-afl, .tag-footy {
+      color: #f87171;
+      border-color: rgba(248,113,113,0.45);
+      background: rgba(248,113,113,0.11);
+    }
+    /* Team Quiz → rose/pink */
+    .tag-quiz {
+      color: #f472b6;
+      border-color: rgba(244,114,182,0.45);
+      background: rgba(244,114,182,0.11);
+    }
+    /* Travel → sky blue */
+    .tag-travel {
+      color: #60a5fa;
+      border-color: rgba(96,165,250,0.45);
+      background: rgba(96,165,250,0.11);
+    }
+    /* Business Class / Flights → indigo */
+    .tag-businessclass, .tag-flights {
+      color: #a5b4fc;
+      border-color: rgba(165,180,252,0.45);
+      background: rgba(99,102,241,0.14);
+    }
+    /* Wealth → gold */
+    .tag-wealth {
+      color: #fcd34d;
+      border-color: rgba(252,211,77,0.45);
+      background: rgba(252,211,77,0.11);
+    }
+    /* Net Worth → emerald */
+    .tag-networth {
+      color: #34d399;
+      border-color: rgba(52,211,153,0.45);
+      background: rgba(52,211,153,0.11);
+    }
+    /* Insights → teal */
+    .tag-insights {
+      color: #2dd4bf;
+      border-color: rgba(45,212,191,0.45);
+      background: rgba(45,212,191,0.11);
+    }
+
+    /* ── LAUNCH BUTTON — orange to deep blue gradient, white text ── */
+    .launch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+      background: linear-gradient(to right, #FF6B00, #0d0d28);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      box-shadow: none;
+      transition: opacity 0.25s ease, transform 0.2s ease;
+      flex-shrink: 0;
+      align-self: flex-start;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .launch-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .card:hover .launch-btn {
+      opacity: 0.88;
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .card:nth-child(1) { animation-delay: 0.10s; }
+    .card:nth-child(2) { animation-delay: 0.17s; }
+    .card:nth-child(3) { animation-delay: 0.24s; }
+    .card:nth-child(4) { animation-delay: 0.31s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr; }
+      .header { padding: 28px 24px; }
+      .name { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <h1 class="name">SID<span>.</span>LAMMATA</h1>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        available for collabs
+      </div>
+    </div>
+    <p class="tagline">
+      Professional googler. Low-code cowboy. Recovering PowerPoint architect.
+      I build tools that actually work —
+      <span class="punchline">don't ask how!</span>
+    </p>
+    <p class="sub-tagline">Few things I shipped. <span class="quip">One of them might even be useful.</span></p>
+  </header>
+
+  <!-- 2×2 EQUAL GRID -->
+  <div class="grid">
+
+    <!-- Card 1 — Borrow Scope -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-header">
+        <span class="card-icon">🏠</span>
+        <h2 class="card-title">Borrow Scope</h2>
+      </div>
+      <div class="card-desc">
+        Ever wondered how much the bank will actually trust you with before quietly laughing?
+        Enter your numbers, confront the truth, plan accordingly. A borrowing capacity
+        estimator for aspiring property owners who still believe the dream is possible.
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"Your bank has opinions. This app has math. One of them is on your side."</div>
+      <div class="tags">
+        <span class="tag tag-finance">Finance</span>
+        <span class="tag tag-property">Property</span>
+        <span class="tag tag-homeloans">Home Loans</span>
+      </div>
+      <a href="https://lowcodesid.github.io/borrowscope/" target="_blank" rel="noopener" class="launch-btn">
+        Open app
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Card 2 — Pick AFL Team -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-header">
+        <span class="card-icon">🏉</span>
+        <h2 class="card-title">Pick AFL Team</h2>
+      </div>
+      <div class="card-desc">
+        No team? No identity. Answer a few honest questions about your personality,
+        life choices, and pain threshold — we'll match you with your perfect AFL club.
+        Loyalty algorithm sold separately.
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"Because 'I go for whoever's winning' is not a personality trait."</div>
+      <div class="tags">
+        <span class="tag tag-afl">AFL</span>
+        <span class="tag tag-footy">Footy</span>
+        <span class="tag tag-quiz">Team Quiz</span>
+      </div>
+      <a href="https://lowcodesid.github.io/pick-afl-team/" target="_blank" rel="noopener" class="launch-btn">
+        Open app
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Card 3 — Premium Deals -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-header">
+        <span class="card-icon">✈️</span>
+        <h2 class="card-title">Premium Deals</h2>
+      </div>
+      <div class="card-desc">
+        Business class and first class flight deals the airlines don't advertise.
+        They exist. You just had to know where to look — and now you do.
+        Champagne taste, points-hacker budget.
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"Your mates flew Economy. You found the loophole. Say nothing."</div>
+      <div class="tags">
+        <span class="tag tag-travel">Travel</span>
+        <span class="tag tag-businessclass">Business Class</span>
+        <span class="tag tag-flights">Flight Deals</span>
+      </div>
+      <a href="https://lowcodesid.github.io/premium-deals/" target="_blank" rel="noopener" class="launch-btn">
+        Open app
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Card 4 — My Money -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-header">
+        <span class="card-icon">💰</span>
+        <h2 class="card-title">My Money</h2>
+      </div>
+      <div class="card-desc">
+        A wealth dashboard that shows your full financial picture — assets, liabilities,
+        and net worth — all in one place. No surprises. Well. Maybe one small one.
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"Net worth: tracked. Self worth: still pending."</div>
+      <div class="tags">
+        <span class="tag tag-finance">Finance</span>
+        <span class="tag tag-wealth">Wealth</span>
+        <span class="tag tag-networth">Net Worth</span>
+        <span class="tag tag-insights">Insights</span>
+      </div>
+      <a href="https://lowcodesid.github.io/my-money/" target="_blank" rel="noopener" class="launch-btn">
+        Open app
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>© 2026 SID.LAMMATA — built with intent, debugged with patience</span>
+    <div class="footer-links">
+      <a href="https://github.com/lowcodesid" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/sidlammata/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="/cdn-cgi/l/email-protection#5b28323f75373a36363a2f3a1b3c363a323775383436">Contact</a>
+   
