@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>sid.lammata — Builder</title>
+  <title>Sid Lammata — Things I Built</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -47,7 +47,7 @@
     .page {
       position: relative;
       z-index: 1;
-      max-width: 1060px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 48px 24px 64px;
     }
@@ -88,8 +88,11 @@
       letter-spacing: 2px;
       line-height: 1;
       color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s;
     }
 
+    .name:hover { color: var(--sub); }
     .name span { color: var(--accent); }
 
     .status-pill {
@@ -106,7 +109,6 @@
       white-space: nowrap;
     }
 
-    /* Green status dot — universally understood as "available" */
     .status-dot {
       width: 7px;
       height: 7px;
@@ -117,7 +119,6 @@
       flex-shrink: 0;
     }
 
-    /* Tagline — all phrases same font, weight, colour. Uniform. */
     .tagline {
       margin-top: 22px;
       font-family: 'DM Sans', sans-serif;
@@ -128,10 +129,8 @@
       line-height: 1.75;
     }
 
-    /* "don't ask how" — orange punchline */
     .tagline .punchline { color: var(--accent); }
 
-    /* Sub-tagline comments — green like the status dot */
     .sub-tagline {
       margin-top: 14px;
       font-family: 'JetBrains Mono', monospace;
@@ -141,21 +140,69 @@
     }
 
     .sub-tagline::before { content: '// '; opacity: 0.5; }
-
     .sub-tagline .quip { opacity: 1; font-style: italic; }
 
-    /* ── 2×2 EQUAL GRID ── */
+    /* ── HEADER COUNTER ── */
+    .header-counter {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .hc-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 0 28px 0 0;
+    }
+
+    .hc-stat:first-child { padding-left: 0; }
+
+    .hc-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .hc-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    .hc-live .hc-num   { color: var(--green); }
+    .hc-live .hc-label { color: var(--muted); }
+
+    .hc-soon .hc-num   { color: var(--accent); }
+    .hc-soon .hc-label { color: var(--muted); }
+
+    .hc-divider {
+      width: 1px;
+      height: 36px;
+      background: var(--border);
+      margin: 0 28px 0 0;
+      flex-shrink: 0;
+    }
+
+    /* ── 3-COL GRID ── */
     .grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
 
+    /* ── STANDARD CARD ── */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 28px;
+      padding: 26px;
       position: relative;
       overflow: hidden;
       transition: border-color 0.25s, background 0.25s, transform 0.25s;
@@ -172,7 +219,6 @@
 
     .card:hover .card-glow { opacity: 1; }
 
-    /* Orange glow on top edge */
     .card-glow {
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -182,54 +228,52 @@
       transition: opacity 0.3s;
     }
 
-    /* ── CARD HEADER: icon inline with title ── */
     .card-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .card-icon {
-      font-size: 28px;
+      font-size: 24px;
       line-height: 1;
       flex-shrink: 0;
     }
 
     .card-title {
       font-family: 'Syne', sans-serif;
-      font-size: 21px;
+      font-size: 19px;
       font-weight: 700;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
       color: var(--text);
       line-height: 1.1;
     }
 
     .card-desc {
       font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 400;
       color: #ababcc;
       line-height: 1.65;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       flex-grow: 1;
     }
 
     .card-divider {
       height: 1px;
       background: var(--border);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       flex-shrink: 0;
     }
 
-    /* Card jokes — green like code comments */
     .card-joke {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10.5px;
       font-style: italic;
       color: var(--green);
       opacity: 0.82;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       line-height: 1.55;
       flex-shrink: 0;
     }
@@ -239,98 +283,50 @@
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 22px;
+      gap: 5px;
+      margin-bottom: 20px;
       flex-shrink: 0;
     }
 
-    /* Base tag shape — colors overridden per category */
     .tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 500;
-      padding: 4px 11px;
+      padding: 3px 10px;
       border-radius: 999px;
       border: 1px solid;
     }
 
-    /* ── TAG COLOUR SYSTEM — persistent across all cards ── */
-    /* Finance → violet/purple */
-    .tag-finance {
-      color: #c084fc;
-      border-color: rgba(192,132,252,0.55);
-      background: rgba(168,85,247,0.14);
-    }
-    /* Property → cyan */
-    .tag-property {
-      color: #22d3ee;
-      border-color: rgba(34,211,238,0.45);
-      background: rgba(34,211,238,0.11);
-    }
-    /* Home Loans → amber */
-    .tag-homeloans {
-      color: #fbbf24;
-      border-color: rgba(251,191,36,0.45);
-      background: rgba(251,191,36,0.11);
-    }
-    /* AFL / Footy → red */
-    .tag-afl, .tag-footy {
-      color: #f87171;
-      border-color: rgba(248,113,113,0.45);
-      background: rgba(248,113,113,0.11);
-    }
-    /* Team Quiz → rose/pink */
-    .tag-quiz {
-      color: #f472b6;
-      border-color: rgba(244,114,182,0.45);
-      background: rgba(244,114,182,0.11);
-    }
-    /* Travel → sky blue */
-    .tag-travel {
-      color: #60a5fa;
-      border-color: rgba(96,165,250,0.45);
-      background: rgba(96,165,250,0.11);
-    }
-    /* Business Class / Flights → indigo */
-    .tag-businessclass, .tag-flights {
-      color: #a5b4fc;
-      border-color: rgba(165,180,252,0.45);
-      background: rgba(99,102,241,0.14);
-    }
-    /* Wealth → gold */
-    .tag-wealth {
-      color: #fcd34d;
-      border-color: rgba(252,211,77,0.45);
-      background: rgba(252,211,77,0.11);
-    }
-    /* Net Worth → emerald */
-    .tag-networth {
-      color: #34d399;
-      border-color: rgba(52,211,153,0.45);
-      background: rgba(52,211,153,0.11);
-    }
-    /* Insights → teal */
-    .tag-insights {
-      color: #2dd4bf;
-      border-color: rgba(45,212,191,0.45);
-      background: rgba(45,212,191,0.11);
-    }
+    /* ── TAG COLOUR SYSTEM ── */
+    .tag-finance     { color: #c084fc; border-color: rgba(192,132,252,0.55); background: rgba(168,85,247,0.14); }
+    .tag-property    { color: #22d3ee; border-color: rgba(34,211,238,0.45);  background: rgba(34,211,238,0.11); }
+    .tag-homeloans   { color: #fbbf24; border-color: rgba(251,191,36,0.45);  background: rgba(251,191,36,0.11); }
+    .tag-afl,
+    .tag-footy       { color: #f87171; border-color: rgba(248,113,113,0.45); background: rgba(248,113,113,0.11); }
+    .tag-quiz        { color: #f472b6; border-color: rgba(244,114,182,0.45); background: rgba(244,114,182,0.11); }
+    .tag-travel      { color: #60a5fa; border-color: rgba(96,165,250,0.45);  background: rgba(96,165,250,0.11); }
+    .tag-businessclass,
+    .tag-flights     { color: #a5b4fc; border-color: rgba(165,180,252,0.45); background: rgba(99,102,241,0.14); }
+    .tag-wealth      { color: #fcd34d; border-color: rgba(252,211,77,0.45);  background: rgba(252,211,77,0.11); }
+    .tag-networth    { color: #34d399; border-color: rgba(52,211,153,0.45);  background: rgba(52,211,153,0.11); }
+    .tag-insights    { color: #2dd4bf; border-color: rgba(45,212,191,0.45);  background: rgba(45,212,191,0.11); }
+    .tag-worldmap    { color: #86efac; border-color: rgba(134,239,172,0.45); background: rgba(134,239,172,0.11); }
+    .tag-interactive { color: #fb923c; border-color: rgba(251,146,60,0.45);  background: rgba(251,146,60,0.11); }
 
-    /* ── LAUNCH BUTTON — orange to deep blue gradient, white text ── */
+    /* ── LAUNCH BUTTON ── */
     .launch-btn {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       font-family: 'Syne', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.3px;
       color: #ffffff;
       background: linear-gradient(to right, #FF6B00, #0d0d28);
       border: none;
       border-radius: 10px;
-      padding: 12px 22px;
-      box-shadow: none;
+      padding: 11px 20px;
       transition: opacity 0.25s ease, transform 0.2s ease;
       flex-shrink: 0;
       align-self: flex-start;
@@ -339,21 +335,204 @@
     }
 
     .launch-btn svg {
-      width: 15px;
-      height: 15px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
       flex-shrink: 0;
     }
 
     .card:hover .launch-btn {
       opacity: 0.88;
       transform: translateY(-1px);
-      box-shadow: none;
     }
+
+    /* ── COMING SOON CARD (TRACE) ── */
+    .card-coming-soon {
+      border-radius: 14px;
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeUp 0.6s ease both;
+      /* Dark base */
+      background: #07070e;
+      /* Animated rainbow gradient border via pseudo-element trick */
+      border: 1px solid transparent;
+      background-clip: padding-box;
+    }
+
+    /* Animated gradient border */
+    .card-coming-soon::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 15px;
+      background: linear-gradient(
+        120deg,
+        #ff0080, #ff6b00, #ffdd00, #00ff88, #00cfff, #a855f7, #ff0080
+      );
+      background-size: 300% 300%;
+      animation: borderShift 4s linear infinite;
+      z-index: 0;
+    }
+
+    /* Inner dark layer sits above the border gradient */
+    .card-coming-soon::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: 13px;
+      background: #080814;
+      z-index: 1;
+    }
+
+    /* All inner content must be above z-index 1 */
+    .card-coming-soon > * { position: relative; z-index: 2; }
+
+    /* Noise overlay for depth */
+    .cs-noise {
+      position: absolute;
+      inset: 1px;
+      border-radius: 13px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .cs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+
+    .cs-badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .cs-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      line-height: 1;
+      margin-bottom: 16px;
+      /* Gradient text */
+      background: linear-gradient(120deg, #ff0080, #ff6b00, #ffdd00, #00cfff, #a855f7);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: borderShift 4s linear infinite;
+    }
+
+    /* Redacted description blocks */
+    .cs-redacted {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 20px;
+    }
+
+    .cs-redact-line {
+      height: 10px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cs-redact-line::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+      animation: shimmer 2.5s ease-in-out infinite;
+    }
+
+    .cs-redact-line:nth-child(1) { width: 100%; }
+    .cs-redact-line:nth-child(2) { width: 85%; }
+    .cs-redact-line:nth-child(3) { width: 60%; }
+
+    .cs-teaser {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      background: linear-gradient(90deg, #a855f7, #00cfff, #ff6b00);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: borderShift 3s linear infinite;
+    }
+
+    .cs-teaser::before { content: '// '; opacity: 0.5; -webkit-text-fill-color: rgba(255,255,255,0.25); }
+
+    .cs-lock-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 11px 20px;
+      align-self: flex-start;
+      cursor: default;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    @keyframes borderShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes shimmer {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    /* Stagger card animations */
+    .grid > *:nth-child(1) { animation-delay: 0.08s; }
+    .grid > *:nth-child(2) { animation-delay: 0.14s; }
+    .grid > *:nth-child(3) { animation-delay: 0.20s; }
+    .grid > *:nth-child(4) { animation-delay: 0.26s; }
+    .grid > *:nth-child(5) { animation-delay: 0.32s; }
+    .grid > *:nth-child(6) { animation-delay: 0.38s; }
 
     /* ── FOOTER ── */
     .footer {
@@ -371,33 +550,16 @@
       animation: fadeUp 0.6s 0.5s ease both;
     }
 
-    .footer a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
+    .footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer a:hover { color: var(--accent); }
     .footer-links { display: flex; gap: 20px; }
 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-
-    .card:nth-child(1) { animation-delay: 0.10s; }
-    .card:nth-child(2) { animation-delay: 0.17s; }
-    .card:nth-child(3) { animation-delay: 0.24s; }
-    .card:nth-child(4) { animation-delay: 0.31s; }
-
     /* ── RESPONSIVE ── */
-    @media (max-width: 680px) {
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
       .grid { grid-template-columns: 1fr; }
       .header { padding: 28px 24px; }
       .name { font-size: 36px; }
@@ -410,7 +572,7 @@
   <!-- HEADER -->
   <header class="header">
     <div class="header-top">
-      <h1 class="name">SID<span>.</span>LAMMATA</h1>
+      <a href="https://lowcodesid.github.io/sid-lammata/" class="name">SID<span>.</span>LAMMATA</a>
       <div class="status-pill">
         <span class="status-dot"></span>
         available for collabs
@@ -422,9 +584,21 @@
       <span class="punchline">don't ask how!</span>
     </p>
     <p class="sub-tagline">Few things I shipped. <span class="quip">One of them might even be useful.</span></p>
+
+    <div class="header-counter">
+      <div class="hc-stat hc-live">
+        <span class="hc-num">5</span>
+        <span class="hc-label">apps live</span>
+      </div>
+      <div class="hc-divider"></div>
+      <div class="hc-stat hc-soon">
+        <span class="hc-num">1</span>
+        <span class="hc-label">coming soon</span>
+      </div>
+    </div>
   </header>
 
-  <!-- 2×2 EQUAL GRID -->
+  <!-- 3-COL GRID -->
   <div class="grid">
 
     <!-- Card 1 — Borrow Scope -->
@@ -435,9 +609,8 @@
         <h2 class="card-title">Borrow Scope</h2>
       </div>
       <div class="card-desc">
-        Ever wondered how much the bank will actually trust you with before quietly laughing?
-        Enter your numbers, confront the truth, plan accordingly. A borrowing capacity
-        estimator for aspiring property owners who still believe the dream is possible.
+        Ever wondered how much the bank will actually trust you with before
+        quietly laughing? Enter your numbers, confront the truth, plan accordingly.
       </div>
       <div class="card-divider"></div>
       <div class="card-joke">"Your bank has opinions. This app has math. One of them is on your side."</div>
@@ -447,8 +620,7 @@
         <span class="tag tag-homeloans">Home Loans</span>
       </div>
       <a href="https://lowcodesid.github.io/borrowscope/" target="_blank" rel="noopener" class="launch-btn">
-        Open app
-        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
     </div>
 
@@ -460,9 +632,8 @@
         <h2 class="card-title">Pick AFL Team</h2>
       </div>
       <div class="card-desc">
-        No team? No identity. Answer a few honest questions about your personality,
-        life choices, and pain threshold — we'll match you with your perfect AFL club.
-        Loyalty algorithm sold separately.
+        No team? No identity. Answer a few honest questions about your personality
+        and pain threshold — we'll match you with your perfect AFL club.
       </div>
       <div class="card-divider"></div>
       <div class="card-joke">"Because 'I go for whoever's winning' is not a personality trait."</div>
@@ -472,8 +643,7 @@
         <span class="tag tag-quiz">Team Quiz</span>
       </div>
       <a href="https://lowcodesid.github.io/pick-afl-team/" target="_blank" rel="noopener" class="launch-btn">
-        Open app
-        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
     </div>
 
@@ -485,9 +655,8 @@
         <h2 class="card-title">Premium Deals</h2>
       </div>
       <div class="card-desc">
-        Business class and first class flight deals the airlines don't advertise.
+        Business &amp; first class deals the airlines don't advertise.
         They exist. You just had to know where to look — and now you do.
-        Champagne taste, points-hacker budget.
       </div>
       <div class="card-divider"></div>
       <div class="card-joke">"Your mates flew Economy. You found the loophole. Say nothing."</div>
@@ -497,8 +666,7 @@
         <span class="tag tag-flights">Flight Deals</span>
       </div>
       <a href="https://lowcodesid.github.io/premium-deals/" target="_blank" rel="noopener" class="launch-btn">
-        Open app
-        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
     </div>
 
@@ -510,8 +678,8 @@
         <h2 class="card-title">My Money</h2>
       </div>
       <div class="card-desc">
-        A wealth dashboard that shows your full financial picture — assets, liabilities,
-        and net worth — all in one place. No surprises. Well. Maybe one small one.
+        A wealth dashboard showing your full financial picture — assets,
+        liabilities, net worth — all in one place. No surprises. Well. Maybe one.
       </div>
       <div class="card-divider"></div>
       <div class="card-joke">"Net worth: tracked. Self worth: still pending."</div>
@@ -522,9 +690,58 @@
         <span class="tag tag-insights">Insights</span>
       </div>
       <a href="https://lowcodesid.github.io/my-money/" target="_blank" rel="noopener" class="launch-btn">
-        Open app
-        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
+    </div>
+
+    <!-- Card 5 — Been There -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-header">
+        <span class="card-icon">🌍</span>
+        <h2 class="card-title">Been There</h2>
+      </div>
+      <div class="card-desc">
+        An interactive world map of every country you've visited. Pin your travels,
+        watch your map fill up, and finally have a visual answer to "oh, you travel a lot?"
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"The airport layover absolutely counts. Fight me."</div>
+      <div class="tags">
+        <span class="tag tag-travel">Travel</span>
+        <span class="tag tag-worldmap">World Map</span>
+        <span class="tag tag-interactive">Interactive</span>
+      </div>
+      <a href="#" target="_blank" rel="noopener" class="launch-btn">
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Card 6 — TRACE (Coming Soon) -->
+    <div class="card-coming-soon">
+      <div class="cs-noise"></div>
+
+      <div class="cs-badge">
+        <span class="cs-badge-dot"></span>
+        Coming Soon
+      </div>
+
+      <div class="cs-title">TRACE</div>
+
+      <div class="cs-redacted">
+        <div class="cs-redact-line"></div>
+        <div class="cs-redact-line"></div>
+        <div class="cs-redact-line"></div>
+      </div>
+
+      <div class="cs-teaser">
+        "Your digital shadow has been following you for years.<br>Soon, you can finally see it."
+      </div>
+
+      <div class="cs-lock-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Classified
+      </div>
     </div>
 
   </div><!-- /grid -->
@@ -535,5 +752,5 @@
     <div class="footer-links">
       <a href="https://github.com/lowcodesid" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/sidlammata/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="/cdn-cgi/l/email-protection#5b28323f75373a36363a2f3a1b3c363a323775383436">Contact</a>
+      <a href="/cdn-cgi/l/email-protection#681b010c4604090505091c09280f05090104460b0705">Contact</a>
    
