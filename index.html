@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sid Lammata — Things I Built</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%2307070e'/%3E%3C!-- Rainbow rays --%3E%3Cg stroke-linecap='round' stroke-width='2.2'%3E%3Cline x1='16' y1='3' x2='16' y2='8' stroke='%23ff0040'/%3E%3Cline x1='22.8' y1='5' x2='20.3' y2='9.3' stroke='%23ff6b00'/%3E%3Cline x1='27' y1='9.2' x2='22.7' y2='11.7' stroke='%23ffd700'/%3E%3Cline x1='29' y1='16' x2='24' y2='16' stroke='%2350fa7b'/%3E%3Cline x1='27' y1='22.8' x2='22.7' y2='20.3' stroke='%2300cfff'/%3E%3Cline x1='22.8' y1='27' x2='20.3' y2='22.7' stroke='%233b82f6'/%3E%3Cline x1='16' y1='29' x2='16' y2='24' stroke='%23a855f7'/%3E%3Cline x1='9.2' y1='27' x2='11.7' y2='22.7' stroke='%23f472b6'/%3E%3Cline x1='5' y1='22.8' x2='9.3' y2='20.3' stroke='%2300cfff'/%3E%3Cline x1='3' y1='16' x2='8' y2='16' stroke='%2350fa7b'/%3E%3Cline x1='5' y1='9.2' x2='9.3' y2='11.7' stroke='%23ffd700'/%3E%3Cline x1='9.2' y1='5' x2='11.7' y2='9.3' stroke='%23ff6b00'/%3E%3C/g%3E%3C!-- Sun core --%3E%3Ccircle cx='16' cy='16' r='5.5' fill='%23FF6B00'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%23ffd700'/%3E%3C/svg%3E">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:        #07070e;
@@ -74,40 +74,72 @@
       opacity: 0.75;
     }
 
-    .header-top {
+    /* Header: left content + right vertical panel */
+    .header-inner {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
+      gap: 0;
+      align-items: stretch;
+    }
+
+    .header-left {
+      flex: 1;
+      padding-right: 40px;
+    }
+
+    /* Vertical separator between left and right */
+    .header-sep {
+      width: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    /* Right column: pill + counters stacked */
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      padding-left: 36px;
+      gap: 0;
+      min-width: 180px;
+      justify-content: center;
     }
 
     .name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(36px, 6vw, 62px);
-      font-weight: 800;
-      letter-spacing: 2px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(32px, 5.5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -1px;
       line-height: 1;
       color: var(--text);
       text-decoration: none;
       transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 20px;
     }
 
     .name:hover { color: var(--sub); }
     .name span { color: var(--accent); }
 
+    /* Available for collabs — now a link */
     .status-pill {
       display: flex;
       align-items: center;
       gap: 8px;
       background: var(--tag-bg);
       border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 14px;
+      border-radius: 10px;
+      padding: 10px 14px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       color: var(--sub);
       white-space: nowrap;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .status-pill:hover {
+      border-color: var(--green);
+      color: var(--green);
     }
 
     .status-dot {
@@ -120,20 +152,57 @@
       flex-shrink: 0;
     }
 
+    /* Horizontal rule between right-panel items */
+    .hr-right {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* Counter rows in right panel */
+    .hc-stat {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+    }
+
+    .hc-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    .hc-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+      line-height: 1.4;
+    }
+
+    .hc-live .hc-num { color: var(--green); }
+    .hc-demo .hc-num { color: #fbbf24; }
+    .hc-soon .hc-num { color: var(--accent); }
+
     .tagline {
-      margin-top: 22px;
       font-family: 'DM Sans', sans-serif;
       font-size: 17px;
       font-weight: 400;
       color: var(--sub);
-      max-width: 640px;
+      max-width: 580px;
       line-height: 1.75;
+      margin-bottom: 14px;
     }
 
     .tagline .punchline { color: var(--accent); }
 
     .sub-tagline {
-      margin-top: 14px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--green);
@@ -142,54 +211,6 @@
 
     .sub-tagline::before { content: '// '; opacity: 0.5; }
     .sub-tagline .quip { opacity: 1; font-style: italic; }
-
-    /* ── HEADER COUNTER ── */
-    .header-counter {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .hc-stat {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      padding: 0 28px 0 0;
-    }
-
-    .hc-stat:first-child { padding-left: 0; }
-
-    .hc-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      line-height: 1;
-    }
-
-    .hc-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
-    }
-
-    .hc-live .hc-num   { color: var(--green); }
-    .hc-live .hc-label { color: var(--muted); }
-
-    .hc-soon .hc-num   { color: var(--accent); }
-    .hc-soon .hc-label { color: var(--muted); }
-
-    .hc-divider {
-      width: 1px;
-      height: 36px;
-      background: var(--border);
-      margin: 0 28px 0 0;
-      flex-shrink: 0;
-    }
 
     /* ── 3-COL GRID ── */
     .grid {
@@ -243,12 +264,66 @@
     }
 
     .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 19px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
       font-weight: 700;
       letter-spacing: -0.3px;
       color: var(--text);
       line-height: 1.1;
+    }
+
+    /* ── STATUS INDICATOR ── */
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid;
+      margin-bottom: 12px;
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    .card-status-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-live {
+      color: var(--green);
+      border-color: rgba(80,250,123,0.35);
+      background: rgba(80,250,123,0.08);
+    }
+    .status-live .card-status-dot {
+      background: var(--green);
+      box-shadow: 0 0 5px var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status-demo {
+      color: #fbbf24;
+      border-color: rgba(251,191,36,0.35);
+      background: rgba(251,191,36,0.08);
+    }
+    .status-demo .card-status-dot {
+      background: #fbbf24;
+    }
+
+    .status-soon {
+      color: var(--accent);
+      border-color: rgba(255,107,0,0.35);
+      background: rgba(255,107,0,0.08);
+    }
+    .status-soon .card-status-dot {
+      background: var(--accent);
+      animation: pulse 1.5s ease-in-out infinite;
     }
 
     .card-desc {
@@ -314,38 +389,56 @@
     .tag-worldmap    { color: #86efac; border-color: rgba(134,239,172,0.45); background: rgba(134,239,172,0.11); }
     .tag-interactive { color: #fb923c; border-color: rgba(251,146,60,0.45);  background: rgba(251,146,60,0.11); }
 
-    /* ── LAUNCH BUTTON ── */
+    /* ── LAUNCH BUTTON — clearly clickable ── */
     .launch-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       font-family: 'Syne', sans-serif;
       font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.3px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
       color: #ffffff;
       background: linear-gradient(to right, #FF6B00, #0d0d28);
       border: none;
       border-radius: 10px;
       padding: 11px 20px;
-      transition: opacity 0.25s ease, transform 0.2s ease;
+      transition: opacity 0.2s, transform 0.15s;
       flex-shrink: 0;
       align-self: flex-start;
       cursor: pointer;
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
     }
+
+    .launch-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transform: skewX(-15deg);
+      transition: left 0.4s ease;
+    }
+
+    .launch-btn:hover::after { left: 130%; }
 
     .launch-btn svg {
       width: 14px; height: 14px;
       stroke: currentColor; fill: none;
       stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
       flex-shrink: 0;
+      transition: transform 0.2s;
     }
 
-    .card:hover .launch-btn {
-      opacity: 0.88;
-      transform: translateY(-1px);
+    .launch-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-2px);
     }
+
+    .launch-btn:hover svg { transform: translate(2px, -2px); }
+    .launch-btn:active { transform: translateY(0); opacity: 1; }
 
     /* ── COMING SOON CARD (TRACE) ── */
     .card-coming-soon {
@@ -564,6 +657,11 @@
       .grid { grid-template-columns: 1fr; }
       .header { padding: 28px 24px; }
       .name { font-size: 36px; }
+      .header-inner { flex-direction: column; }
+      .header-sep { display: none; }
+      .header-right { flex-direction: row; padding-left: 0; padding-top: 20px; border-top: 1px solid var(--border); align-items: center; gap: 16px; }
+      .hr-right { display: none; }
+      .hc-stat { padding: 0; }
     }
   </style>
 </head>
@@ -572,39 +670,83 @@
 
   <!-- HEADER -->
   <header class="header">
-    <div class="header-top">
-      <a href="https://lowcodesid.github.io/sid-lammata/" class="name">SID<span>.</span>LAMMATA</a>
-      <div class="status-pill">
-        <span class="status-dot"></span>
-        available for collabs
-      </div>
-    </div>
-    <p class="tagline">
-      Professional googler. Low-code cowboy. Recovering PowerPoint architect.
-      I build tools that actually work —
-      <span class="punchline">don't ask how!</span>
-    </p>
-    <p class="sub-tagline">Few things I shipped. <span class="quip">One of them might even be useful.</span></p>
+    <div class="header-inner">
 
-    <div class="header-counter">
-      <div class="hc-stat hc-live">
-        <span class="hc-num">5</span>
-        <span class="hc-label">apps live</span>
+      <!-- LEFT: name + tagline -->
+      <div class="header-left">
+        <a href="https://lowcodesid.github.io/sid-lammata/" target="_blank" rel="noopener" class="name">SID<span>.</span>LAMMATA</a>
+        <p class="tagline">
+          Professional googler. Low-code cowboy. Board-level translator.
+          Trying to close the gap between "let's do AI" and "just shipped AI" —
+          <span class="punchline">3 continents, 20 years, no refunds.</span>
+        </p>
+        <p class="sub-tagline">Few things I shipped. <span class="quip">One of them might even be useful.</span></p>
       </div>
-      <div class="hc-divider"></div>
-      <div class="hc-stat hc-soon">
-        <span class="hc-num">1</span>
-        <span class="hc-label">coming soon</span>
+
+      <!-- Vertical separator -->
+      <div class="header-sep"></div>
+
+      <!-- RIGHT: pill + counter stacked -->
+      <div class="header-right">
+        <a href="https://lowcodesid.github.io/sid-lammata/" target="_blank" rel="noopener" class="status-pill">
+          <span class="status-dot"></span>
+          available for collabs
+        </a>
+        <div class="hr-right"></div>
+        <div class="hc-stat hc-live">
+          <span class="hc-num">3</span>
+          <span class="hc-label">apps<br>live</span>
+        </div>
+        <div class="hr-right"></div>
+        <div class="hc-stat hc-demo">
+          <span class="hc-num">2</span>
+          <span class="hc-label">on<br>demo</span>
+        </div>
+        <div class="hr-right"></div>
+        <div class="hc-stat hc-soon">
+          <span class="hc-num">1</span>
+          <span class="hc-label">coming<br>soon</span>
+        </div>
       </div>
+
     </div>
   </header>
 
   <!-- 3-COL GRID -->
   <div class="grid">
 
-    <!-- Card 1 — Borrow Scope -->
+    <!-- Card 1 — Been There (LIVE) -->
     <div class="card">
       <div class="card-glow"></div>
+      <div class="card-status status-live">
+        <span class="card-status-dot"></span>Live
+      </div>
+      <div class="card-header">
+        <span class="card-icon">🌍</span>
+        <h2 class="card-title">Been There</h2>
+      </div>
+      <div class="card-desc">
+        An interactive world map of every country you've visited. Pin your travels,
+        watch your map fill up, and finally have a visual answer to "oh, you travel a lot?"
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-joke">"The airport layover absolutely counts. Fight me."</div>
+      <div class="tags">
+        <span class="tag tag-travel">Travel</span>
+        <span class="tag tag-worldmap">World Map</span>
+        <span class="tag tag-interactive">Interactive</span>
+      </div>
+      <a href="https://lowcodesid.github.io/been-there/" target="_blank" rel="noopener" class="launch-btn">
+        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </a>
+    </div>
+
+    <!-- Card 2 — Borrow Scope (LIVE) -->
+    <div class="card">
+      <div class="card-glow"></div>
+      <div class="card-status status-live">
+        <span class="card-status-dot"></span>Live
+      </div>
       <div class="card-header">
         <span class="card-icon">🏠</span>
         <h2 class="card-title">Borrow Scope</h2>
@@ -625,9 +767,12 @@
       </a>
     </div>
 
-    <!-- Card 2 — Pick AFL Team -->
+    <!-- Card 3 — Pick AFL Team (LIVE) -->
     <div class="card">
       <div class="card-glow"></div>
+      <div class="card-status status-live">
+        <span class="card-status-dot"></span>Live
+      </div>
       <div class="card-header">
         <span class="card-icon">🏉</span>
         <h2 class="card-title">Pick AFL Team</h2>
@@ -648,9 +793,12 @@
       </a>
     </div>
 
-    <!-- Card 3 — Premium Deals -->
+    <!-- Card 4 — Premium Deals (DEMO) -->
     <div class="card">
       <div class="card-glow"></div>
+      <div class="card-status status-demo">
+        <span class="card-status-dot"></span>Mock Data
+      </div>
       <div class="card-header">
         <span class="card-icon">✈️</span>
         <h2 class="card-title">Premium Deals</h2>
@@ -671,9 +819,12 @@
       </a>
     </div>
 
-    <!-- Card 4 — My Money -->
+    <!-- Card 5 — My Money (DEMO) -->
     <div class="card">
       <div class="card-glow"></div>
+      <div class="card-status status-demo">
+        <span class="card-status-dot"></span>Mock Data
+      </div>
       <div class="card-header">
         <span class="card-icon">💰</span>
         <h2 class="card-title">My Money</h2>
@@ -691,29 +842,6 @@
         <span class="tag tag-insights">Insights</span>
       </div>
       <a href="https://lowcodesid.github.io/my-money/" target="_blank" rel="noopener" class="launch-btn">
-        Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-      </a>
-    </div>
-
-    <!-- Card 5 — Been There -->
-    <div class="card">
-      <div class="card-glow"></div>
-      <div class="card-header">
-        <span class="card-icon">🌍</span>
-        <h2 class="card-title">Been There</h2>
-      </div>
-      <div class="card-desc">
-        An interactive world map of every country you've visited. Pin your travels,
-        watch your map fill up, and finally have a visual answer to "oh, you travel a lot?"
-      </div>
-      <div class="card-divider"></div>
-      <div class="card-joke">"The airport layover absolutely counts. Fight me."</div>
-      <div class="tags">
-        <span class="tag tag-travel">Travel</span>
-        <span class="tag tag-worldmap">World Map</span>
-        <span class="tag tag-interactive">Interactive</span>
-      </div>
-      <a href="https://lowcodesid.github.io/been-there/" target="_blank" rel="noopener" class="launch-btn">
         Open app <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
       </a>
     </div>
